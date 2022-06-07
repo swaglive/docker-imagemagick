@@ -1,7 +1,9 @@
-FROM        alpine:3.16 as imagemagick
+FROM        alpine:3.16
 
 ARG         version=7.1.0-37
 ARG         MAKEFLAGS="-j4"
+
+ENTRYPOINT  ["convert"]
 
 RUN         apk add --virtual .build-deps \
                 curl \
@@ -18,11 +20,9 @@ RUN         apk add --virtual .build-deps \
                 fontconfig \
                 libzip-dev \
                 build-base && \
-            curl -sL https://github.com/ImageMagick/ImageMagick/archive/refs/tags/${version}.tar.gz | tar xz
-
-WORKDIR     ImageMagick-${version}
-
-RUN         ./configure \
+            curl -sL https://github.com/ImageMagick/ImageMagick/archive/refs/tags/${version}.tar.gz | tar xz && \
+            cd ImageMagick-${version} && \
+            ./configure \
                 --with-bzlib=yes \
                 --with-fontconfig=yes \
                 --with-freetype=yes \
@@ -39,13 +39,19 @@ RUN         ./configure \
                 --with-zlib=yes \
                 --with-zstd=yes && \
             make && \
-            make install
-
-###
-
-FROM        alpine:3.16
-
-ENTRYPOINT  ["convert"]
-
-COPY        --from=imagemagick /usr/local/bin /usr/local/bin
-COPY        --from=imagemagick /usr/local/include /usr/local/include
+            make install && \
+            rm -rf ../ImageMagick-${version} && \
+            apk add --virtual .run-deps \
+                zlib \
+                zstd \
+                libheif \
+                libwebp \
+                jpeg \
+                xz \
+                librsvg-dev \
+                libpng \
+                tiff \
+                msttcorefonts-installer \
+                fontconfig \
+                libzip && \
+            apk del .build-deps

@@ -1,4 +1,4 @@
-FROM        alpine:3.15 as imagemagick
+FROM        alpine:3.16 as imagemagick
 
 ARG         version=7.1.0-37
 ARG         MAKEFLAGS="-j4"

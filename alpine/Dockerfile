@@ -1,6 +1,6 @@
 FROM        alpine:3.16
 
-ARG         version=7.1.0-37
+ARG         version=7.1.0-44
 ARG         MAKEFLAGS="-j4"
 
 ENTRYPOINT  ["convert"]

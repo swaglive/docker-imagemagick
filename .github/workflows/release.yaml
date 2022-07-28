@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        version: ["7.1.0-37"]
+        version: ["7.1.0-44"]
         flavor: ["alpine"]
 
     steps:

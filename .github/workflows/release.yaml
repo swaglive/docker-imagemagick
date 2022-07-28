@@ -14,7 +14,6 @@ jobs:
     strategy:
       matrix:
         version: ["7.1.0-44"]
-        flavor: ["alpine"]
 
     steps:
     - name: Checkout
@@ -45,9 +44,8 @@ jobs:
         images: |
           swaglive/imagemagick
           ghcr.io/${{ github.repository_owner }}/imagemagick
-        flavor: |
-          suffix=-${{ matrix.flavor }}
         tags: |
+          type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ matrix.version }}
           type=semver,pattern={{major}}.{{minor}},value=${{ matrix.version }}
 
     - name: Setup
@@ -62,7 +60,7 @@ jobs:
       uses: docker/build-push-action@v3
       id: build
       with:
-        context: ${{ matrix.flavor }}
+        context: alpine
         build-args: |
           version=${{ matrix.version }}
           MAKEFLAGS=-j${{ steps.config.outputs.NPROC }}

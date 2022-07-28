@@ -19,6 +19,7 @@ RUN         apk add --virtual .build-deps \
                 msttcorefonts-installer \
                 fontconfig \
                 libzip-dev \
+                libde265-dev \
                 build-base && \
             curl -sL https://github.com/ImageMagick/ImageMagick/archive/refs/tags/${version}.tar.gz | tar xz && \
             cd ImageMagick-${version} && \
@@ -45,6 +46,7 @@ RUN         apk add --virtual .build-deps \
                 zlib \
                 zstd \
                 libheif \
+                libde265 \
                 libwebp \
                 jpeg \
                 xz \
